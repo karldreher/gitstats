@@ -1,18 +1,16 @@
 package main
 
 import (
-	"log"
 	"net/http"
 
-	gitstats "github.com/karldreher/gitstats/server/src"
+	"github.com/karldreher/gitstats/server/internal/db"
+	"github.com/karldreher/gitstats/server/internal/handlers"
 )
 
 func main() {
-	http.HandleFunc("/", gitstats.GetRoot)
-	http.HandleFunc("/api/v1/commit", gitstats.PostCommit)
+	db.Connect()
+	http.Handle("/", http.HandlerFunc(handlers.GetRoot))
+	http.Handle("/api/v1/commit", http.HandlerFunc(handlers.PostCommit))
 
-	err := http.ListenAndServe(":8000", nil)
-	if err != nil {
-		log.Fatal(err)
-	}
+	http.ListenAndServe(":8000", nil)
 }
