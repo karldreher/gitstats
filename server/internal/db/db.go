@@ -2,7 +2,6 @@ package db
 
 import (
 	"database/sql"
-	"fmt"
 	"log"
 	"os"
 
@@ -22,8 +21,12 @@ func Connect() {
 	if err != nil {
 		log.Fatalf("Unable to connect to database: %v\n", err)
 	}
-	//TODO This doesn't seem correct.  (because, we need to call Ping)
-	fmt.Println("Connected to database")
+	pingErr := DB.Ping()
+	if pingErr != nil {
+		log.Fatalf("Unable to ping database: %v\n", pingErr)
+	}
+	log.Println("Connected to database")
+
 }
 
 func InsertCommit(commit CommitRecord) error {
