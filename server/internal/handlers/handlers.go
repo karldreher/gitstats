@@ -18,6 +18,10 @@ func GetRoot(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusNotFound)
 }
 
+func Healthz(w http.ResponseWriter, r *http.Request) {
+	w.WriteHeader(http.StatusOK)
+}
+
 func PostCommit(w http.ResponseWriter, r *http.Request) {
 	h := r.Header.Get("x-api-key")
 	// TODO, a more abstract API key (in the db?)
@@ -46,4 +50,12 @@ func PostCommit(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.WriteHeader(http.StatusCreated)
+}
+
+func Readyz(w http.ResponseWriter, r *http.Request) {
+	if db.DBReady() {
+		w.WriteHeader(http.StatusOK)
+	} else {
+		w.WriteHeader(http.StatusServiceUnavailable)
+	}
 }

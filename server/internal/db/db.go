@@ -36,3 +36,8 @@ func InsertCommit(commit CommitRecord) error {
 	}
 	return nil
 }
+
+func DBReady() bool {
+	err := DB.Ping()
+	return err == nil
+}
