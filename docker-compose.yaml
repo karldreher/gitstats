@@ -12,10 +12,21 @@ services:
       - ./data:/var/lib/postgresql/data
       - ./db:/docker-entrypoint-initdb.d
     entrypoint: ["docker-entrypoint.sh" , "postgres", "-c", "log_statement=all"]
-  psql:
-    image: postgres:17.2-alpine3.21
+  # psql:
+  #   image: postgres:17.2-alpine3.21
+  #   depends_on:
+  #     - postgres
+  #   environment:
+  #     PGPASSWORD: gitstats_is_the_best
+  #   entrypoint: ["psql", "-h", "postgres", "-U", "gitstats",  "gitstats"]
+  
+  server:
+    build: ./server
+    restart: unless-stopped
     depends_on:
       - postgres
     environment:
-      PGPASSWORD: gitstats_is_the_best
-    entrypoint: ["psql", "-h", "postgres", "-U", "gitstats",  "gitstats"]
+      - DATABASE_URL=postgres://gitstats:gitstats_is_the_best@postgres:5432/gitstats
+      - API_KEY=example-api-key
+    ports:
+      - 8000:8000
