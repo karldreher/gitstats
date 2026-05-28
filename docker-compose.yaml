@@ -3,7 +3,20 @@ services:
     build: ./server
     restart: unless-stopped
     environment:
-      - API_KEY=example-api-key
+      # Personal mode (comment out for org mode)
+      - GITHUB_PAT=your-pat-here
+      - GITHUB_USER=your-github-username
+      - POLL_INTERVAL_MINUTES=15
+      # Persistence (optional — pick one)
+      # - PERSISTENCE_FILE=/data/gitstats.json
+      # - PERSISTENCE_REDIS_HOST=redis:6379
+      # - PERSISTENCE_REDIS_PASS=your-redis-password
+      #
+      # Org mode (comment out personal vars above, uncomment below)
+      # - GITHUB_APP_ID=12345
+      # - GITHUB_APP_INSTALLATION_ID=67890
+      # - GITHUB_APP_CERTIFICATE=-----BEGIN RSA PRIVATE KEY-----\n...\n-----END RSA PRIVATE KEY-----
+      # - GITHUB_ORG=your-org-name
     ports:
       - "8000:8000"
 

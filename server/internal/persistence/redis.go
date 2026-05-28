@@ -2,6 +2,7 @@ package persistence
 
 import (
 	"context"
+	"fmt"
 	"strconv"
 
 	"github.com/redis/go-redis/v9"
@@ -39,6 +40,15 @@ func (s *redisStore) Load() (map[string]float64, error) {
 	return out, nil
 }
 
+// Increment atomically increments the key using HINCRBY — immediately durable.
 func (s *redisStore) Increment(key string) error {
 	return s.client.HIncrBy(context.Background(), redisHashKey, key, 1).Err()
 }
+
+// Set stores a value using HSET — immediately durable.
+func (s *redisStore) Set(key string, value float64) error {
+	return s.client.HSet(context.Background(), redisHashKey, key, fmt.Sprintf("%g", value)).Err()
+}
+
+// Flush is a no-op for Redis; all writes are immediately durable.
+func (s *redisStore) Flush() error { return nil }

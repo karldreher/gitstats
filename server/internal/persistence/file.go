@@ -30,10 +30,26 @@ func (s *fileStore) Load() (map[string]float64, error) {
 	return out, nil
 }
 
+// Increment updates the in-memory counter only. Call Flush to persist.
 func (s *fileStore) Increment(key string) error {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 	s.data[key]++
+	return nil
+}
+
+// Set stores a value in memory only. Call Flush to persist.
+func (s *fileStore) Set(key string, value float64) error {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	s.data[key] = value
+	return nil
+}
+
+// Flush writes the full in-memory state to disk as JSON.
+func (s *fileStore) Flush() error {
+	s.mu.Lock()
+	defer s.mu.Unlock()
 	return s.writeToDisk()
 }
 
