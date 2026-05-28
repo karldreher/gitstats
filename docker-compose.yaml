@@ -1,32 +1,15 @@
 services:
-  postgres:
-    image: postgres:17.2-alpine3.21
-    environment:
-      POSTGRES_USER: gitstats
-      PGPASSWORD: gitstats_is_the_best
-      POSTGRES_HOST_AUTH_METHOD: trust
-      POSTGRES_DB: gitstats
-    ports:
-      - "5432:5432"
-    volumes:
-      - ./data:/var/lib/postgresql/data
-      - ./db:/docker-entrypoint-initdb.d
-    entrypoint: ["docker-entrypoint.sh" , "postgres", "-c", "log_statement=all"]
-  # psql:
-  #   image: postgres:17.2-alpine3.21
-  #   depends_on:
-  #     - postgres
-  #   environment:
-  #     PGPASSWORD: gitstats_is_the_best
-  #   entrypoint: ["psql", "-h", "postgres", "-U", "gitstats",  "gitstats"]
-  
   server:
     build: ./server
     restart: unless-stopped
-    depends_on:
-      - postgres
     environment:
-      - DATABASE_URL=postgres://gitstats:gitstats_is_the_best@postgres:5432/gitstats
       - API_KEY=example-api-key
     ports:
-      - 8000:8000
+      - "8000:8000"
+
+  prometheus:
+    image: prom/prometheus:v2.53.0
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    ports:
+      - "9090:9090"
