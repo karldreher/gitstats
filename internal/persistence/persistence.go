@@ -1,3 +1,4 @@
+// Package persistence defines the StateStore interface and its file and Redis implementations.
 package persistence
 
 import (

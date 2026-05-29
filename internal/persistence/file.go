@@ -12,6 +12,7 @@ type fileStore struct {
 	data map[string]float64
 }
 
+// NewFileStore returns a StateStore backed by a local JSON file at path.
 func NewFileStore(path string) (StateStore, error) {
 	s := &fileStore{path: path, data: make(map[string]float64)}
 	if err := s.loadFromDisk(); err != nil && !os.IsNotExist(err) {

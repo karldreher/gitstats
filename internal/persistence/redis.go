@@ -14,6 +14,7 @@ type redisStore struct {
 	client *redis.Client
 }
 
+// NewRedisStore returns a StateStore backed by a Redis hash at host, authenticated with password.
 func NewRedisStore(host, password string) (StateStore, error) {
 	c := redis.NewClient(&redis.Options{
 		Addr:     host,
