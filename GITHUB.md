@@ -4,20 +4,33 @@ Personal mode authenticates as a GitHub user via a Personal Access Token (PAT) a
 
 ## Creating a Personal Access Token
 
-1. Go to **github.com → Settings → Developer settings → Personal access tokens → Tokens (classic)**
-2. Click **Generate new token (classic)**
-3. Set a descriptive note (e.g. `gitstats`)
-4. Set an expiration appropriate for your use case
-5. Select the minimum required scope:
+Use a fine-grained PAT. You can use either pre-filled link below to open GitHub's token creation page with the name and description already filled in, then set an expiration and click **Generate token**.
 
-| Scope | Required | Reason |
-|---|---|---|
-| `read:user` | Yes | Grants access to the GraphQL `contributionsCollection` query |
-| `repo` | Only for private repos | Required to include commits from private repositories |
+**Public repos only:**
+```
+https://github.com/settings/personal-access-tokens/new?name=gitstats&description=Track+GitHub+contribution+statistics
+```
 
-6. Click **Generate token** and copy the value immediately
+**Including private repos** (after clicking, scope the token to the relevant repositories):
+```
+https://github.com/settings/personal-access-tokens/new?name=gitstats&description=Track+GitHub+contribution+statistics&contents=read
+```
 
-> **Note:** Fine-grained PATs are not recommended for personal mode. The `contributionsCollection` query is a user-level GraphQL operation that maps cleanly to the classic PAT `read:user` scope.
+Or create one manually:
+
+1. Go to **github.com → Settings → Developer settings → Personal access tokens → Fine-grained tokens**
+2. Click **Generate new token**
+3. Set a descriptive name (e.g. `gitstats`) and an expiration appropriate for your use case
+4. Under **Permissions**, set only what is required:
+
+| Permission | Level | Required | Reason |
+|---|---|---|---|
+| (none) | — | Public repos only | `contributionsCollection` for public repos is accessible to any authenticated token |
+| Contents | Read-only | Private repos | Required to include contributions from private repositories |
+
+5. Click **Generate token** and copy the value immediately
+
+> **Note:** Fine-grained PATs are best suited for local development and small self-hosted deployments. Regardless of use case, rotate tokens regularly and use the minimum required scopes.
 
 ## Configuration
 
