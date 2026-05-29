@@ -1,0 +1,15 @@
+# PersistentVolumeClaim for file-based state persistence.
+# Only needed when PERSISTENCE_FILE is set in configmap.yaml.
+# Redis persistence does not require this resource.  Redis is not demonstrated within these examples.  The PVC is the simplest way to manage a persistent layer for the app.
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: gitstats-data
+  namespace: gitstats
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Mi
+  # storageClassName: standard  # uncomment and set to your preferred StorageClass
