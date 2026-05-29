@@ -5,7 +5,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/karldreher/gitstats/server/internal/github"
+	"github.com/karldreher/gitstats/internal/github"
 )
 
 func TestParseConventional(t *testing.T) {

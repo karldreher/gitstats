@@ -3,7 +3,7 @@ package handlers
 import (
 	"net/http"
 
-	"github.com/karldreher/gitstats/server/internal/poller"
+	"github.com/karldreher/gitstats/internal/poller"
 )
 
 func GetRoot(w http.ResponseWriter, r *http.Request) {

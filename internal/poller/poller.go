@@ -10,9 +10,9 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/karldreher/gitstats/server/internal/github"
-	"github.com/karldreher/gitstats/server/internal/metrics"
-	"github.com/karldreher/gitstats/server/internal/persistence"
+	"github.com/karldreher/gitstats/internal/github"
+	"github.com/karldreher/gitstats/internal/metrics"
+	"github.com/karldreher/gitstats/internal/persistence"
 )
 
 var pollReady atomic.Bool

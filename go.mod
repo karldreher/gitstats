@@ -1,4 +1,4 @@
-module github.com/karldreher/gitstats/server
+module github.com/karldreher/gitstats
 
 go 1.24.1
 

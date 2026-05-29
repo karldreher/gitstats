@@ -1,6 +1,6 @@
 services:
   server:
-    build: ./server
+    build: .
     restart: unless-stopped
     environment:
       # Personal mode (comment out for org mode)

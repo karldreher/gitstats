@@ -6,11 +6,11 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/karldreher/gitstats/server/internal/github"
-	"github.com/karldreher/gitstats/server/internal/handlers"
-	"github.com/karldreher/gitstats/server/internal/metrics"
-	"github.com/karldreher/gitstats/server/internal/persistence"
-	"github.com/karldreher/gitstats/server/internal/poller"
+	"github.com/karldreher/gitstats/internal/github"
+	"github.com/karldreher/gitstats/internal/handlers"
+	"github.com/karldreher/gitstats/internal/metrics"
+	"github.com/karldreher/gitstats/internal/persistence"
+	"github.com/karldreher/gitstats/internal/poller"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
 

@@ -4,7 +4,7 @@ WORKDIR /app
 
 COPY . .
 
-RUN go build -ldflags '-w -s -extldflags "-static"' -a  .
+RUN go build -ldflags '-w -s -extldflags "-static"' -a -o gitstats .
 
 FROM alpine:3.21.3
 
@@ -14,4 +14,4 @@ COPY --from=builder /app ./
 
 EXPOSE 8000
 
-CMD ["./server"]
+CMD ["./gitstats"]
