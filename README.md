@@ -8,6 +8,8 @@ A GitHub commit metrics exporter. Polls GitHub for commit activity and exposes P
 
 **Org** — tracks all non-archived repos in a GitHub org via GitHub App auth. Set `GITHUB_APP_ID`, `GITHUB_APP_INSTALLATION_ID`, `GITHUB_APP_PRIVATE_KEY`, and `GITHUB_ORG`.
 
+See [GitHub Setup](GITHUB.md) for token and App credential instructions.
+
 ## Environment Variables
 
 | Variable | Description |
