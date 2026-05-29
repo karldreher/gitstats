@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: gitstats
+  namespace: gitstats
+  labels:
+    app: gitstats
+  annotations:
+    # Annotations for annotation-based Prometheus scrape configs (e.g. prometheus-community/prometheus).
+    # If you use Prometheus Operator, use servicemonitor.yaml instead.
+    prometheus.io/scrape: "true"
+    prometheus.io/port: "8000"
+    prometheus.io/path: "/metrics"
+spec:
+  selector:
+    app: gitstats
+  ports:
+    - name: metrics
+      port: 8000
+      targetPort: metrics
+      protocol: TCP

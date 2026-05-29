@@ -1,0 +1,64 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gitstats
+  namespace: gitstats
+  labels:
+    app: gitstats
+spec:
+  # Do not increase replicas. gitstats maintains cumulative counters in a single
+  # persistence store; running multiple replicas would double-count commits.
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gitstats
+  template:
+    metadata:
+      labels:
+        app: gitstats
+    spec:
+      containers:
+        - name: gitstats
+          image: ghcr.io/karldreher/gitstats:latest
+          imagePullPolicy: Always
+          ports:
+            - name: metrics
+              containerPort: 8000
+              protocol: TCP
+          envFrom:
+            - configMapRef:
+                name: gitstats
+            - secretRef:
+                name: gitstats
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 8000
+            initialDelaySeconds: 5
+            periodSeconds: 30
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /readyz
+              port: 8000
+            initialDelaySeconds: 10
+            periodSeconds: 15
+            failureThreshold: 3
+          resources:
+            requests:
+              cpu: 50m
+              memory: 64Mi
+            limits:
+              cpu: 200m
+              memory: 128Mi
+
+          # -- File persistence volume mount (uncomment when using PERSISTENCE_FILE) --
+          # volumeMounts:
+          #   - name: data
+          #     mountPath: /data
+
+      # -- File persistence volume (uncomment when using PERSISTENCE_FILE) --
+      # volumes:
+      #   - name: data
+      #     persistentVolumeClaim:
+      #       claimName: gitstats-data

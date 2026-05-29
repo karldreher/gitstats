@@ -1,0 +1,23 @@
+# ServiceMonitor for Prometheus Operator (kube-prometheus-stack / prometheus-operator).
+# Requires the Prometheus Operator CRDs to be installed in your cluster.
+# If you are not using Prometheus Operator, use the annotations in service.yaml instead.
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: gitstats
+  namespace: gitstats
+  labels:
+    # The 'release' label must match the value used by your Prometheus Operator instance.
+    # For a default kube-prometheus-stack install this is typically "prometheus".
+    release: prometheus
+spec:
+  selector:
+    matchLabels:
+      app: gitstats
+  namespaceSelector:
+    matchNames:
+      - gitstats
+  endpoints:
+    - port: metrics
+      path: /metrics
+      interval: 60s
