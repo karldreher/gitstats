@@ -50,7 +50,7 @@ func TestFromEnv_OrgMissingFields(t *testing.T) {
 	t.Setenv("GITHUB_APP_ID", "12345")
 	t.Setenv("GITHUB_APP_INSTALLATION_ID", "")
 	t.Setenv("GITHUB_ORG", "")
-	t.Setenv("GITHUB_APP_CERTIFICATE", "")
+	t.Setenv("GITHUB_APP_PRIVATE_KEY", "")
 	_, err := FromEnv()
 	if err == nil {
 		t.Error("org mode with missing fields: expected error")

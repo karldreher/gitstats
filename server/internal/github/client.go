@@ -69,16 +69,16 @@ func FromEnv() (*Client, error) {
 
 	installationID := os.Getenv("GITHUB_APP_INSTALLATION_ID")
 	org := os.Getenv("GITHUB_ORG")
-	cert := os.Getenv("GITHUB_APP_CERTIFICATE")
+	cert := os.Getenv("GITHUB_APP_PRIVATE_KEY")
 
 	if installationID == "" || org == "" || cert == "" {
-		return nil, errors.New("GITHUB_APP_INSTALLATION_ID, GITHUB_ORG, and GITHUB_APP_CERTIFICATE are all required in org mode")
+		return nil, errors.New("GITHUB_APP_INSTALLATION_ID, GITHUB_ORG, and GITHUB_APP_PRIVATE_KEY are all required in org mode")
 	}
 
 	cert = strings.ReplaceAll(cert, `\n`, "\n")
 	key, err := jwt.ParseRSAPrivateKeyFromPEM([]byte(cert))
 	if err != nil {
-		return nil, fmt.Errorf("parsing GITHUB_APP_CERTIFICATE: %w", err)
+		return nil, fmt.Errorf("parsing GITHUB_APP_PRIVATE_KEY: %w", err)
 	}
 
 	c.mode = OrgMode
