@@ -1,3 +1,4 @@
+// Package ghclient provides a GitHub API client supporting both personal (PAT) and org (GitHub App) auth modes.
 package ghclient
 
 import (
@@ -23,7 +24,7 @@ const (
 
 // CommitData is a normalized commit record returned by either fetch mode.
 type CommitData struct {
-	Message string
+	Message string // full commit message
 	Repo    string // "owner/repo"
 	Author  string // GitHub login or display name
 }
@@ -93,7 +94,10 @@ func FromEnv() (*Client, error) {
 	return c, nil
 }
 
-func (c *Client) Mode() Mode   { return c.mode }
+// Mode returns the operation mode (PersonalMode or OrgMode).
+func (c *Client) Mode() Mode { return c.mode }
+
+// User returns the GitHub login or org name the client is authenticated as.
 func (c *Client) User() string { return c.user }
 
 // FetchCommits dispatches to the appropriate mode's fetch implementation.

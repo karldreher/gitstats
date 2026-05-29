@@ -1,3 +1,4 @@
+// Package poller runs the GitHub commit polling loop and updates metrics.
 package poller
 
 import (
