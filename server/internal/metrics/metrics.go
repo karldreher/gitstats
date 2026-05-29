@@ -7,8 +7,8 @@ import (
 
 var CommitsTotal = promauto.NewCounterVec(
 	prometheus.CounterOpts{
-		Name: "gitstats_commits_total",
-		Help: "Total number of commits received, labeled by repo, author, type, and conventional compliance.",
+		Name: "gitstats_commits",
+		Help: "Total number of commits received, labeled by repo, author, prefix, and conventional compliance.",
 	},
-	[]string{"repo", "author", "commit_type", "conventional"},
+	[]string{"repo", "author", "prefix", "conventional"},
 )

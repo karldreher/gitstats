@@ -94,7 +94,7 @@ func parseConventional(message string) (commitType, conventional string) {
 			return m, "true"
 		}
 	}
-	return "unknown", "false"
+	return "undefined", "false"
 }
 
 func pollInterval() time.Duration {

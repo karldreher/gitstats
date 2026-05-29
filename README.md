@@ -33,15 +33,15 @@ A GitHub commit metrics exporter. Polls GitHub for commit activity and exposes P
 
 ## Metrics
 
-`gitstats_commits_total` — counter with labels `repo`, `author`, `commit_type`, `conventional`.
+`gitstats_commits` — counter with labels `repo`, `author`, `prefix`, `conventional`.
 
 ```promql
 # Conventional commit compliance ratio
-sum(rate(gitstats_commits_total{conventional="true"}[1h])) /
-sum(rate(gitstats_commits_total[1h]))
+sum(rate(gitstats_commits{conventional="true"}[1h])) /
+sum(rate(gitstats_commits[1h]))
 
 # Per-author compliance
-sum by (author) (rate(gitstats_commits_total{conventional="true"}[1h]))
+sum by (author) (rate(gitstats_commits{conventional="true"}[1h]))
 ```
 
 ## Running

@@ -24,16 +24,16 @@ func TestParseConventional(t *testing.T) {
 		{"refactor", "refactor: extract helper", "refactor", "true"},
 		{"perf", "perf: cache response", "perf", "true"},
 		{"test", "test: add unit tests", "test", "true"},
-		{"non-conventional", "WIP stuff", "unknown", "false"},
-		{"uppercase type", "Feat: something", "unknown", "false"},
-		{"missing space after colon", "feat:no space", "unknown", "false"},
-		{"unknown type", "build: update makefile", "unknown", "false"},
+		{"non-conventional", "WIP stuff", "undefined", "false"},
+		{"uppercase type", "Feat: something", "undefined", "false"},
+		{"missing space after colon", "feat:no space", "undefined", "false"},
+		{"unknown type", "build: update makefile", "undefined", "false"},
 		{"multiline conventional", "feat: add thing\n\nBody text here", "feat", "true"},
-		{"multiline non-conventional", "WIP\n\nsome details", "unknown", "false"},
+		{"multiline non-conventional", "WIP\n\nsome details", "undefined", "false"},
 		// The regex uses .{1,50} without $ — enforces minimum 1 char, not a strict max
 		{"description non-empty", "feat: " + strings.Repeat("x", 50), "feat", "true"},
 		{"description over 50 still matches", "feat: " + strings.Repeat("x", 51), "feat", "true"},
-		{"empty message", "", "unknown", "false"},
+		{"empty message", "", "undefined", "false"},
 	}
 
 	for _, tt := range tests {
