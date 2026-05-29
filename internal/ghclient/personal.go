@@ -1,4 +1,4 @@
-package github
+package ghclient
 
 import "time"
 
@@ -46,7 +46,7 @@ type personalResult struct {
 	}
 }
 
-func (c *Client) FetchPersonalCommits(since time.Time) ([]CommitData, error) {
+func (c *Client) fetchPersonalCommits(since time.Time) ([]CommitData, error) {
 	var result personalResult
 	err := c.query(personalQuery, map[string]any{
 		"login": c.user,

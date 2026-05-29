@@ -1,4 +1,4 @@
-package github
+package ghclient
 
 import (
 	"strings"
@@ -73,7 +73,7 @@ type orgResult struct {
 	}
 }
 
-func (c *Client) FetchOrgCommits(since time.Time) ([]CommitData, error) {
+func (c *Client) fetchOrgCommits(since time.Time) ([]CommitData, error) {
 	sinceStr := since.UTC().Format(time.RFC3339)
 	var allCommits []CommitData
 	var cursor *string

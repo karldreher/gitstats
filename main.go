@@ -6,8 +6,7 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/karldreher/gitstats/internal/github"
-	"github.com/karldreher/gitstats/internal/handlers"
+	"github.com/karldreher/gitstats/internal/ghclient"
 	"github.com/karldreher/gitstats/internal/metrics"
 	"github.com/karldreher/gitstats/internal/persistence"
 	"github.com/karldreher/gitstats/internal/poller"
@@ -15,7 +14,7 @@ import (
 )
 
 func main() {
-	client, err := github.FromEnv()
+	client, err := ghclient.FromEnv()
 	if err != nil {
 		log.Fatalf("github config error: %v", err)
 	}
@@ -30,9 +29,19 @@ func main() {
 
 	go poller.Run(context.Background(), client, store)
 
-	http.Handle("/", http.HandlerFunc(handlers.GetRoot))
-	http.Handle("/healthz", http.HandlerFunc(handlers.Healthz))
-	http.Handle("/readyz", http.HandlerFunc(handlers.Readyz))
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusNotFound)
+	})
+	http.HandleFunc("/healthz", func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusOK)
+	})
+	http.HandleFunc("/readyz", func(w http.ResponseWriter, r *http.Request) {
+		if poller.IsReady() {
+			w.WriteHeader(http.StatusOK)
+		} else {
+			w.WriteHeader(http.StatusServiceUnavailable)
+		}
+	})
 	http.Handle("/metrics", promhttp.Handler())
 
 	http.ListenAndServe(":8000", nil)

@@ -1,4 +1,4 @@
-package github
+package ghclient
 
 import (
 	"crypto/rsa"
@@ -100,9 +100,9 @@ func (c *Client) User() string { return c.user }
 func (c *Client) FetchCommits(since time.Time) ([]CommitData, error) {
 	switch c.mode {
 	case PersonalMode:
-		return c.FetchPersonalCommits(since)
+		return c.fetchPersonalCommits(since)
 	case OrgMode:
-		return c.FetchOrgCommits(since)
+		return c.fetchOrgCommits(since)
 	}
 	return nil, errors.New("unknown mode")
 }

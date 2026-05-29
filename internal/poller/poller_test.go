@@ -5,7 +5,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/karldreher/gitstats/internal/github"
+	"github.com/karldreher/gitstats/internal/ghclient"
 )
 
 func TestParseConventional(t *testing.T) {
@@ -69,7 +69,7 @@ func TestPollInterval_Invalid(t *testing.T) {
 }
 
 func TestResolveSince_PersonalNoStore(t *testing.T) {
-	since := resolveSince(github.PersonalMode, nil)
+	since := resolveSince(ghclient.PersonalMode, nil)
 	expected := time.Now().AddDate(0, 0, -30)
 	diff := since.Sub(expected)
 	if diff < -5*time.Second || diff > 5*time.Second {
@@ -78,7 +78,7 @@ func TestResolveSince_PersonalNoStore(t *testing.T) {
 }
 
 func TestResolveSince_OrgNoStore(t *testing.T) {
-	since := resolveSince(github.OrgMode, nil)
+	since := resolveSince(ghclient.OrgMode, nil)
 	diff := time.Since(since)
 	if diff > 5*time.Second || diff < 0 {
 		t.Errorf("org mode without store: want ~now, got %v ago", diff)

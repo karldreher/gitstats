@@ -10,7 +10,7 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/karldreher/gitstats/internal/github"
+	"github.com/karldreher/gitstats/internal/ghclient"
 	"github.com/karldreher/gitstats/internal/metrics"
 	"github.com/karldreher/gitstats/internal/persistence"
 )
@@ -29,7 +29,7 @@ func IsReady() bool { return pollReady.Load() }
 
 // Run starts the polling loop. It runs an immediate first poll, then ticks
 // every POLL_INTERVAL_MINUTES (default 15). Blocks until ctx is cancelled.
-func Run(ctx context.Context, client *github.Client, store persistence.StateStore) {
+func Run(ctx context.Context, client *ghclient.Client, store persistence.StateStore) {
 	interval := pollInterval()
 	doPoll(client, store)
 	ticker := time.NewTicker(interval)
@@ -44,7 +44,7 @@ func Run(ctx context.Context, client *github.Client, store persistence.StateStor
 	}
 }
 
-func doPoll(client *github.Client, store persistence.StateStore) {
+func doPoll(client *ghclient.Client, store persistence.StateStore) {
 	since := resolveSince(client.Mode(), store)
 	log.Printf("polling since %s", since.Format(time.RFC3339))
 
@@ -73,7 +73,7 @@ func doPoll(client *github.Client, store persistence.StateStore) {
 	pollReady.Store(true)
 }
 
-func resolveSince(mode github.Mode, store persistence.StateStore) time.Time {
+func resolveSince(mode ghclient.Mode, store persistence.StateStore) time.Time {
 	if store != nil {
 		if state, err := store.Load(); err == nil {
 			if ts, ok := state[persistence.KeyLastPolledAt]; ok && ts > 0 {
@@ -81,7 +81,7 @@ func resolveSince(mode github.Mode, store persistence.StateStore) time.Time {
 			}
 		}
 	}
-	if mode == github.PersonalMode {
+	if mode == ghclient.PersonalMode {
 		return time.Now().AddDate(0, 0, -30)
 	}
 	return time.Now()
